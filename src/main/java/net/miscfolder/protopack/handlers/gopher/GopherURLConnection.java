@@ -46,7 +46,9 @@ public class GopherURLConnection extends URLConnection{
 		OutputStreamWriter writer = new OutputStreamWriter(socket.getOutputStream());
 		if(url.getPath().length() > 1){
 			String path;
-			if(url.getPath().charAt(2) == '/'){
+			if(url.getPath().length() == 2){
+				path = "";
+			}else if(url.getPath().charAt(2) == '/'){
 				path = url.getPath().substring(2);
 			}else{
 				// FIXED: support unofficial typeless URLs
@@ -76,37 +78,7 @@ public class GopherURLConnection extends URLConnection{
 	@Override
 	public InputStream getInputStream() throws IOException{
 		if(!connected) connect();
-		return stream;
+		return new GopherInputStream(stream);
 	}
 
-	// TODO
-	// Maintains a three-character buffer to avoid printing
-	// full-stop
-/*	private class GopherInputStream extends InputStream{
-		private final InputStream wrapped;
-		private final int[] buffer = new int[5];
-		private int bytes;
-		private int lastGoodByte = -1;
-		private boolean closed = false;
-
-		GopherInputStream(InputStream wrapped) throws IOException{
-			this.wrapped = wrapped;
-		}
-
-		@Override
-		public int read() throws IOException{
-			return 0;
-		}
-
-		private void read0() throws IOException{
-			int read = wrapped.read();
-			if(read == -1){
-				// Check for full stop
-				if(buffer[bytes%5] == '.'){
-					// Check for \r\n
-					if(buffer[bytes%5 - 1] == '\n')
-				}
-			}
-		}
-	}*/
 }
