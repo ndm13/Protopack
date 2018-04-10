@@ -3,19 +3,20 @@ package net.miscfolder.protopack.handlers.gopher;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
-import java.net.*;
+import java.net.Proxy;
+import java.net.Socket;
+import java.net.URL;
+import java.net.URLConnection;
 
-import net.miscfolder.protopack.support.SocketProxy;
+import net.miscfolder.protopack.support.SocketProxyURLConnection;
 
-public class GopherURLConnection extends URLConnection{
-	private final Proxy proxy;
+public class GopherURLConnection extends SocketProxyURLConnection{
 	private InputStream stream;
-	private char contentType;
+	private final char contentType;
 	private String mimeType;
 
 	GopherURLConnection(URL url, Proxy proxy){
-		super(url);
-		this.proxy = proxy;
+		super(url, proxy);
 		String path = this.url.getPath();
 		if(path.length() < 2){
 			// Root dir is menu type
@@ -35,11 +36,13 @@ public class GopherURLConnection extends URLConnection{
 		return mimeType;
 	}
 
+	public char getContentTypeChar(){
+		return contentType;
+	}
+
 	@Override
 	public void connect() throws IOException{
-		InetSocketAddress address =
-				new InetSocketAddress(url.getHost(), url.getPort() == -1 ? 70 : url.getPort());
-		Socket socket = SocketProxy.proxy(address, proxy, getConnectTimeout());
+		Socket socket = newProxiedSocket();
 
 		// Request page
 		// FIXED: support unofficial "query string" URLs
