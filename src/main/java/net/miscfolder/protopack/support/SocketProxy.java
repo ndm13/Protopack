@@ -32,7 +32,7 @@ public class SocketProxy{
 						proxyAddress.getHostString(), "http");
 				if(auth != null){
 					headers.append(" HTTP/1.0\nProxy-Authorization:Basic ");
-					byte[] userBytes = (auth.getUserName() + ":").getBytes("UTF-8");
+					byte[] userBytes = (auth.getUserName() + ":").getBytes(StandardCharsets.UTF_8);
 					ByteBuffer passBytes = StandardCharsets.UTF_8.encode(CharBuffer.wrap(auth.getPassword()));
 					ByteBuffer authBytes = ByteBuffer.allocate(userBytes.length + passBytes.capacity());
 					authBytes.put(userBytes);
@@ -67,6 +67,6 @@ public class SocketProxy{
 		while((length = stream.read(buffer)) != -1){
 			result.write(buffer, 0, length);
 		}
-		return result.toString("UTF-8");
+		return result.toString(StandardCharsets.UTF_8);
 	}
 }

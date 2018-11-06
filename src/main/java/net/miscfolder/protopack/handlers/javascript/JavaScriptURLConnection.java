@@ -1,7 +1,6 @@
 package net.miscfolder.protopack.handlers.javascript;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
@@ -20,7 +19,7 @@ public class JavaScriptURLConnection extends URLConnection{
 	}
 
 	@Override
-	public InputStream getInputStream() throws IOException{
+	public InputStream getInputStream(){
 		if(!connected) connect();
 		return new ByteArrayInputStream(content);
 	}

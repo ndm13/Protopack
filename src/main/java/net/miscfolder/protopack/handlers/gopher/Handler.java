@@ -1,9 +1,6 @@
 package net.miscfolder.protopack.handlers.gopher;
 
-import java.net.Proxy;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLStreamHandler;
+import java.net.*;
 import java.util.*;
 
 public class Handler extends URLStreamHandler{
@@ -32,7 +29,7 @@ public class Handler extends URLStreamHandler{
 				// d - Document (requires more processing)
 				// ; - Video (requires more processing)
 				put('c',"text/calendar");
-				put('M',"message/rfc882");  // MIME-encoded
+				put('M',"message/rfc822");  // MIME-encoded
 			}});
 	// FIXED: support unknown types
 	private static final List<Character> UNKNOWN_SUFFIX_TYPES =
